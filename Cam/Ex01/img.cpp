@@ -1,4 +1,4 @@
-﻿
+﻿/*
 #include <opencv2/core/core.hpp>        // coreモジュールのヘッダーをインクルード
 #include <opencv2/highgui/highgui.hpp>  // highguiモジュールのヘッダーをインクルード
 #include <opencv2/imgproc/imgproc.hpp>
@@ -8,14 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
 int main(int argc, const char* argv[])
 {
+	CvSeq *points;
+	CvPoint pt;
+	CvRect rect;
+	CvMemStorage *storage = cvCreateMemStorage (0);
+
+	int xmax=0, ymax=0;
+
+
 	//----現画像----
 	IplImage *img;
 	cvNamedWindow("img");
-	img = cvLoadImage("img.png");
+	img = cvLoadImage("img2.png");
 	CvSize sizeofImage = cvGetSize(img);
 
 	if(img == NULL){
@@ -38,33 +44,41 @@ int main(int argc, const char* argv[])
 	cvCvtColor(img,hsv,CV_BGR2HSV);
 
 	CvScalar s;  
-        //画素(x,y)ごとの処理
-        for (int y=0; y<sizeofImage.height; y++) {
-            for (int x=0; x<sizeofImage.width; x++) {
-                s = cvGet2D(hsv, y, x);
+        for (pt.y=0; pt.y<sizeofImage.height; pt.y++) {
+            for (pt.x=0; pt.x<sizeofImage.width; pt.x++) {
+                s = cvGet2D(hsv, pt.y, pt.x);
                 if ( 10 > s.val[0] && 200 < s.val[1] && 200 < s.val[2]) {
-					printf("(%d,%d)\n",x ,y);
+					printf("(%d,%d)\n",pt.x ,pt.y);
+					if(xmax < pt.x){
+						xmax = pt.x;
+					}
+					if(ymax < pt.y){
+						ymax = pt.y;
+					}
+					
 				} else{
 					s.val[0]=0;
 					s.val[1]=0;
 					s.val[2]=255;
-					cvSet2D(result, y, x, s);
+					cvSet2D(result, pt.y, pt.x, s);
 				}
             }
         }
-	
+	printf("xmax:%d,ymax:%d",xmax, ymax);
+	points = cvCreateSeq (CV_SEQ_ELTYPE_POINT, sizeof (CvSeq), sizeof (CvPoint), storage);
+	rect = cvBoundingRect (points, 0);
+	cvRectangle (hsv, cvPoint (rect.x, rect.y),cvPoint (rect.x + xmax, rect.y + ymax), CV_RGB (0, 0, 0), 2);
+
 	//----RGB変換----
 	cvCvtColor(hsv,result, CV_HSV2BGR);
 
 	cvShowImage("img",img);
-	//cvShowImage("img2",img);
 	cvShowImage("hsv",hsv);
 	cvShowImage("result",result);
 
 	cvWaitKey(0);
 
 	cvReleaseImage(&img);
-	//cvReleaseImage(&img2);
 	cvReleaseImage(&hsv);
 	cvReleaseImage(&result);
 
@@ -72,3 +86,4 @@ int main(int argc, const char* argv[])
 
   return 0;
 }
+*/
