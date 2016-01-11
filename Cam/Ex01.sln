@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ex01", "Ex01\Ex01.vcxproj", "{94E953AC-0AFF-4A42-A297-75424CD9AAD8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cam", "Ex01\Ex01.vcxproj", "{94E953AC-0AFF-4A42-A297-75424CD9AAD8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Cam2", "Ex01\Cam2\Cam2.vcxproj", "{81E58FD8-1FD7-43FB-9C2E-4341D92A0C25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{94E953AC-0AFF-4A42-A297-75424CD9AAD8}.Debug|Win32.Build.0 = Debug|Win32
 		{94E953AC-0AFF-4A42-A297-75424CD9AAD8}.Release|Win32.ActiveCfg = Release|Win32
 		{94E953AC-0AFF-4A42-A297-75424CD9AAD8}.Release|Win32.Build.0 = Release|Win32
+		{81E58FD8-1FD7-43FB-9C2E-4341D92A0C25}.Debug|Win32.ActiveCfg = Debug|Win32
+		{81E58FD8-1FD7-43FB-9C2E-4341D92A0C25}.Debug|Win32.Build.0 = Debug|Win32
+		{81E58FD8-1FD7-43FB-9C2E-4341D92A0C25}.Release|Win32.ActiveCfg = Release|Win32
+		{81E58FD8-1FD7-43FB-9C2E-4341D92A0C25}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
