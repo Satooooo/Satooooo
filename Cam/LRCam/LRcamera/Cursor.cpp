@@ -1,5 +1,4 @@
 
-//頂点取得と透視変換のウィンドウを表示
 #include <opencv2/core/core.hpp>        
 #include <opencv2/highgui/highgui.hpp>  
 #include <opencv2/imgproc/imgproc.hpp>
@@ -12,10 +11,10 @@
 #include <time.h>
 #include "windows.h"
 
+#include "Cursor.h"
 
 using namespace cv;
 using namespace std;
-
 
 void my_mouse_callback(int event, int x, int y, int flags, void* param);
 void draw_box(Mat* img, Rect rect);
@@ -23,6 +22,7 @@ BOOL SetCursorPos(CvPoint X, CvPoint Y);
 
 Rect box;
 RECT rect;
+RECT Drect;
 bool drawing_box = false;
 char str[32];
 int t=0;
@@ -31,18 +31,16 @@ int flag = -1;
 int key = NULL;
 POINT WP;
 POINT CP;
+POINT P;
 
 int maxk = 0;
 int cx = 0;
 int cy = 0;
 CvPoint C;
 
-
 #define RADIUS 4
 #define WIDTH 640
 #define HEIGHT 480
-
-
 
 int main(int argc, const char* argv[])
 {
@@ -143,33 +141,39 @@ int main(int argc, const char* argv[])
 		C.x = cx;
 		C.y = cy;
 
-		CP.x = cx;
-		CP.y = cy;
+		//CP.x = cx;
+		//CP.y = cy;
 
 		if(mouseflag==1){//aを押したとき
 			setMouseCallback("Video", my_mouse_callback, (void *)&src_img);
 
 			HWND hwnd = (HWND)cvGetWindowHandle("Video");
+			HWND hDesk = GetDesktopWindow();
 
-			GetCursorPos(&WP);//マウスの座標取得
+			GetWindowRect(hwnd, &rect);
+			GetWindowRect(hDesk, &Drect);
 
-			//
+			P.x	= Drect.left + rect.left;
+			P.y = Drect.top + rect.top;
 
-			//GetWindowRect(hwnd, &rect);
-
+			//printf("%d, %d \n",rect.left, rect.top);
+			//printf("%d, %d \n",Drect.right, Drect.bottom);
 			//printf("%d, %d\n",rect.left, rect.top);
 
-			//ScreenToClient(hwnd, &CP);
+			ScreenToClient(hDesk, &P);
 
-			WP.x = C.x;
-			WP.y = C.y;
+			WP.x = C.x + P.x;
+			WP.y = C.y + P.y;
 
 			SetCursorPos(WP.x, WP.y);//マウスの座標に赤の重心の座標を代入
 			
+			printf("赤色重心: x:%d y:%d\n",C.x, C.y);
+			printf("マウス　: x:%d y:%d\n",WP.x, WP.y);
+		}else{
+			GetCursorPos(&WP);//マウスの座標取得
+			printf("赤色重心: x:%d y:%d\n",C.x, C.y);
+			printf("マウス　: x:%d y:%d\n",WP.x, WP.y);
 		}
-		
-		printf("赤色重心: x:%d y:%d\n",C.x, C.y);
-		printf("マウス　: x:%d y:%d\n",WP.x, WP.y);
 		
 		circle(src_img, C, RADIUS, CV_RGB(255, 170, 0), 2, CV_AA, 0);
 
