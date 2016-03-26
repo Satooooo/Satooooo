@@ -530,7 +530,7 @@ int main(int argc, const char* argv[])
 			RP.x = Drect.left + Rrect.left;
 			RP.y = Drect.top + Rrect.top;
 
-			ScreenToClient(hDesk, &P);
+			ScreenToClient(hDesk, &LSP);
 
 			LCP.x = LC.x;
 			LCP.y = LC.y;
@@ -538,16 +538,31 @@ int main(int argc, const char* argv[])
 			RCP.x = RC.x;
 			RCP.y = RC.y;
 			
-			GetCursorPos(&LSP);//マウスの座標取得
+			//
+
+			RCP.x *= 2;
+			LCP.x *= 2;
+			RCP.y *= (800/480);
+			LCP.y *= (800/480);
+
+			//GetCursorPos(&LSP);//マウスの座標取得
+
 			SetCursorPos(LCP.x, LCP.y);//マウスの座標に赤の重心の座標を代入
 
-			GetCursorPos(&RSP);
-			SetCursorPos(RCP.x, RCP.y);
-
-			printf("赤色(Lresult): x:%d y:%d\n",LCP.x, LCP.y);
-			printf("赤色(Rresult): x:%d y:%d\n",RCP.x, RCP.y);
+			//GetCursorPos(&RSP);
+			//SetCursorPos(RCP.x, RCP.y);
+			
+			printf("赤色(LresultImage): x:%3d y:%3d\n",LCP.x, LCP.y);
+			printf("赤色(RresultImage): x:%3d y:%3d\n",RCP.x, RCP.y);
+			if((LCP.x == 0 && RCP.x == 0) || (LCP.y == 0 && RCP.y == 0)){
+				printf("触れていません\n");
+			} else if(abs(LCP.x - RCP.x) <= 50 &&  abs(LCP.y - RCP.y) <= 50){
+				printf("触れています\n");
+			} else {
+				printf("触れていません\n");
+			}
 			printf("\n");
-
+		   /*
 			if(f < 10){
 				Lave.x += LCP.x;
 				Lave.y += LCP.y;
@@ -560,14 +575,12 @@ int main(int argc, const char* argv[])
 				printf("Lresult平均値; %d, %d\n",Lave.x/10, Lave.y/10);
 				printf("Rresult平均値; %d, %d\n",Rave.x/10, Rave.y/10);
 			}
-			if(CV_EVENT_LBUTTONDOWN){	
-				printf("クリック\n");
-			}
+			*/
 		}else{
 			GetCursorPos(&LSP);//マウスの座標取得
-			printf("マウス: x:%d y:%d\n",LSP.x, LSP.y);
-			printf("Lresult: x:%d y:%d\n",LC.x, LC.y);
-			printf("Rresult: x:%d y:%d\n",RC.x, RC.y);
+			printf("マウス座標      : x:%4d y:%4d\n",LSP.x, LSP.y);
+			printf("LresultImage座標: x:%3d y:%3d\n",LC.x, LC.y);
+			printf("RresultImage座標: x:%3d y:%3d\n",RC.x, RC.y);
 			printf("\n");
 
 		}
@@ -686,14 +699,11 @@ void my_mouse_callback(int event, int x, int y, int flags, void* param){
             box.height = y - box.y;
         }
         break;
-	if((abs(Lave.x - Rave.y) < 30) || (abs(Lave.y - Rave.y) < 10)){
-
 	case CV_EVENT_LBUTTONDOWN:
 				drawing_box = true;
 				box = Rect(x, y, 0, 0);
 				Eventmouseflag = 1;
 				break;
-	}
     case CV_EVENT_LBUTTONUP:
         drawing_box = false;
         if (box.width < 0){
